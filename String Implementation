@@ -1,0 +1,160 @@
+public class MyString {
+    private char[] data;
+    private int length;
+
+    // Constructor
+    public MyString(String s) {
+        length = s.length();
+        data = new char[length];
+        for (int i = 0; i < length; i++) {
+            data[i] = s.charAt(i);
+        }
+    }
+
+    // Constructor for empty string
+    public MyString() {
+        length = 0;
+        data = new char[0];
+    }
+
+    // Method to get the length of the string
+    public static int calculateLength(MyString str) {
+        int length = 0;
+        // Iterate through each character of the string until an exception is caught
+        try {
+            while (true) {
+                // Attempt to access the character at the current index
+                str.charAt(length);
+                // If successful, increment the length
+                length++;
+            }
+        } catch (IndexOutOfBoundsException e) {
+            // IndexOutOfBoundsException is caught when attempting to access a character beyond the end of the string
+            // Return the calculated length
+            return length;
+        }
+    }
+
+    // Method to get character at specific index
+    public char charAt(int index) {
+        if (index < 0 || index >= length) {
+            throw new IndexOutOfBoundsException("Index " + index + " out of bounds for length " + length);
+        }
+        return data[index];
+    }
+
+    // Method to concatenate two strings
+    public MyString concat(MyString other) {
+        char[] newData = new char[length + other.length];
+        for (int i = 0; i < length; i++) {
+            newData[i] = data[i];
+        }
+        for (int i = 0; i < other.length; i++) {
+            newData[length + i] = other.data[i];
+        }
+        return new MyString(new String(newData));
+    }
+
+    // Method to compare two strings
+    public boolean equals(MyString other) {
+        if (length != other.length) {
+            return false;
+        }
+        for (int i = 0; i < length; i++) {
+            if (data[i] != other.data[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void searchPattern(MyString text, String pattern) {
+        int patternLength = pattern.length();
+        int textLength = calculateLength(text) ;
+
+        for (int i = 0; i <= textLength - patternLength; i++) {
+            int j;
+            for (j = 0; j < patternLength; j++) {
+                if (text.charAt(i + j) != pattern.charAt(j)) {
+                    break;
+                }
+            }
+            if (j == patternLength) {
+                System.out.println("Pattern found at index " + i);
+            }
+        }
+
+    }
+
+    // Method to get substring
+    public MyString substring(int beginIndex, int endIndex) {
+        if (beginIndex < 0 || endIndex > length || beginIndex > endIndex) {
+            throw new IndexOutOfBoundsException("Invalid substring range");
+        }
+        char[] newData = new char[endIndex - beginIndex];
+        for (int i = beginIndex; i < endIndex; i++) {
+            newData[i - beginIndex] = data[i];
+        }
+        return new MyString(new String(newData));
+    }
+
+    // Method to convert to uppercase
+    public MyString toUpperCase() {
+        char[] newData = new char[length];
+        for (int i = 0; i < length; i++) {
+            newData[i] = Character.toUpperCase(data[i]);
+        }
+        return new MyString(new String(newData));
+    }
+
+    // Method to convert to lowercase
+    public MyString toLowerCase() {
+        char[] newData = new char[length];
+        for (int i = 0; i < length; i++) {
+            newData[i] = Character.toLowerCase(data[i]);
+        }
+        return new MyString(new String(newData));
+    }
+
+    // Method to convert to string representation
+    public String toString() {
+        return new String(data);
+    }
+
+    public static void main(String[] args) {
+        // Create a MyString object
+        MyString str = new MyString("Hello, World!");
+
+        // Display the original string
+
+        // Get the length of the string
+        int length = calculateLength(str);
+        System.out.println("Length of the string \"" + str + "\" is: " + length);
+
+        // Get character at specific index
+        System.out.println("Character at index 7: " + str.charAt(7));
+
+        // Concatenate strings
+        MyString concatStr = str.concat(new MyString(" Welcome"));
+        System.out.println("Concatenated string: " + concatStr);
+
+        // Compare strings
+        MyString otherStr = new MyString("Hello, World!!");
+        System.out.println("Equals original string: " + str.equals(otherStr));
+
+        // Get substring
+        MyString subStr = str.substring(7, 12);
+        System.out.println("Substring: " + subStr);
+
+        // Convert to uppercase
+        MyString upperStr = str.toUpperCase();
+        System.out.println("Uppercase: " + upperStr);
+
+        // Convert to lowercase
+        MyString lowerStr = str.toLowerCase();
+        System.out.println("Lowercase: " + lowerStr);
+
+        String pattern = "llo";
+        searchPattern(str, pattern);
+    }
+}
