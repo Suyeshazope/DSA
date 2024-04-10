@@ -1,0 +1,77 @@
+public class QueueTest {
+    public static void main(String[] args) {
+        MyQueue queue = new MyQueue(5) ;
+        queue.push(10);
+        queue.push(20);
+        queue.push(30);
+        queue.push(40);
+        queue.push(50);
+//        queue.push(60);
+
+//        queue.pop();
+//        queue.pop();
+//        queue.pop();
+        queue.pop();
+        queue.pop();
+        queue.pop();
+
+        queue.push(60) ;
+        queue.push(70);
+
+        System.out.println(queue.peek());
+    }
+}
+
+class MyQueue
+{
+    Object array[]; // = new int[ ? ]
+    int front = 0;
+    int rear = 0 ;
+    int size;
+
+    public MyQueue(int size) {
+        this.size = size;
+        array = new Object [ size ];
+    }
+    void push(Object item) {
+
+        if(rear == size)
+            throw new com.QueueOverFlowException("Stack is full");
+
+        System.out.println("Adding item : " + item);
+        array [ rear++ ] = item;
+    }
+
+    Object pop() {
+        if(front == rear)
+            throw new com.EmptyQueueExeption("Stack is Empty");
+
+        System.out.println("Removing item....");
+        rear = size - rear ;
+//        rear-- ;
+        return array [ front++ ];
+    }
+
+    Object peek() {
+        if(front==rear)
+            throw new com.EmptyQueueExeption("Stack is Empty");
+
+        return array[front];
+    }
+}
+
+class QueueOverFlowException extends RuntimeException
+{
+
+    public QueueOverFlowException(String message) {
+        super(message);
+    }
+
+}
+
+class EmptyQueueExeption extends RuntimeException {
+    EmptyQueueExeption(String str) {
+        super(str);
+    }
+}
+
