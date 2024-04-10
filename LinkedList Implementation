@@ -1,0 +1,235 @@
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.Scanner;
+
+public class MyLinkedList {
+    public static void main(String[] args) throws IOException {
+        Employee1 emp1 = new Employee1(101,"Jack",10000);
+        Employee1 emp2 = new Employee1(102,"Jane",20000);
+        Employee1 emp3 = new Employee1(103,"Jill",30000);
+        Employee1 emp4 = new Employee1(104,"ginny",50000);
+
+        LinkedList list = new LinkedList();
+
+        list.add(emp1);
+        list.add(emp2);
+        list.addAtBeg(emp3);
+        list.printAll();
+//        list.addAtPos(emp4);
+//        list.deleteAtLast();
+//        list.deleteAtLast();
+//        list.deleteAtBeg();
+//        list.deleteAtPos();
+//        list.update();
+//        list.printAll();
+
+        FileOutputStream fs = new FileOutputStream("data.txt") ;
+        ObjectOutputStream os = new ObjectOutputStream(fs) ;
+
+        os.writeObject(emp1);
+        os.close();
+        fs.close();
+    }
+}
+
+class LinkedList {
+    Employee1 start=null;
+    Employee1 current=null;
+
+    void add(Employee1 node) {
+        if(start==null) {
+            start = node; //first object
+            current = node;
+            start.next = null;
+            start.prev = null;
+        }
+        else{
+            current.next = node; //2nd object
+            node.prev = current;
+            current = node;
+        }
+    }
+
+    void addAtBeg(Employee1 node){
+        if(start==null) {
+            start = node; //first object
+            current = node;
+            start.next = null;
+            start.prev = null;
+        }
+        else{
+//         node.next = start ;
+//         start = node ;
+            start.prev = node ;
+            node.next = start ;
+            start = node ;
+        }
+    }
+
+    void addAtPos(Employee1 node){
+        Scanner sc = new Scanner(System.in) ;
+        System.out.println("Enter a position where you want to node...");
+        int pos = sc.nextInt() ;
+        Employee1 temp ;
+       if(pos == 1){
+           addAtBeg(node);
+       }
+        else{
+            temp = start ;
+            for (int i = 1; i < pos-1 ; i++) {
+                temp = temp.next;
+            }
+            node.next = temp.next ;
+            node.prev = temp ;
+            temp.next = node ;
+        }
+    }
+
+    void deleteAtBeg(){
+        if(start == null){
+            System.out.println("List is Empty...");
+        }
+        else{
+            start = start.next ;
+            start.prev = null ;
+        }
+    }
+
+    void deleteAtLast(){
+        Employee1 temp = start ;
+//        while(temp.next != null){
+//            current.prev = null ;
+//
+//        }
+        current.prev.next = null ;
+        current = current.prev ;
+    }
+
+    void deleteAtPos(){
+        Scanner sc = new Scanner(System.in) ;
+        System.out.println("Enter a empNumber which you want to delete...");
+        int empNum = sc.nextInt() ;
+        Employee1 temp = start;
+
+        while(temp.getEmpNumber() != empNum){
+            temp = temp.next ;
+        }
+
+       if(temp == current){
+           deleteAtLast();
+       }
+       else if(temp == start){
+           deleteAtBeg();
+       }
+       else{
+           temp.next.prev = temp.prev ;
+           temp.prev.next = temp.next ;
+           temp.prev = null ;
+           temp.next = null ;
+       }
+    }
+
+    void deleteAll(){
+        this.start = null ;
+    }
+
+    void update(){
+        Scanner sc = new Scanner(System.in) ;
+        System.out.println("Enter a empNumber which you want to update....");
+        int empNum = sc.nextInt() ;
+        Employee1 temp = start;
+
+        while(temp.getEmpNumber() != empNum){
+            temp = temp.next ;
+        }
+
+        System.out.println("Choose a option what you want to update");
+        System.out.println("1. EmpName");
+        System.out.println("2. EmpNumber");
+        int choice = sc.nextInt() ;
+
+        switch (choice){
+            case 1 : {
+                System.out.println("Enter the EmpName :");
+                String name = sc.next() ;
+                temp.setEmpName(name) ;
+                break;
+            }
+            case 2 : {
+                System.out.println("Enter the empNumber :");
+                int num = sc.nextInt() ;
+                temp.setEmpNumber(num); ;
+                break;
+            }
+        }
+
+    }
+
+    void sortByEmpNum(){
+        Employee1 temp = start ;
+
+        while(temp.next != null){
+            if (temp.getEmpNumber() > temp.next.getEmpNumber()){
+
+            }
+        }
+    }
+
+    void printAll() {
+        Employee1 ptr = start;
+        while(ptr!=null) {
+            System.out.println(ptr.hashCode()+" "+ptr.toString());
+            ptr = ptr.next;
+        }
+    }
+}
+
+class Employee1 implements Serializable{
+    private int empNumber ;
+    private String empName ;
+    private float salary ;
+
+    Employee1 next;
+    Employee1 prev;
+
+    public Employee1(int empNumber, String empName, float salary) {
+        this.empNumber = empNumber;
+        this.empName = empName;
+        this.salary = salary;
+    }
+
+    public int getEmpNumber() {
+        return empNumber;
+    }
+
+    public void setEmpNumber(int empNumber) {
+        this.empNumber = empNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "empNumber=" + empNumber +
+                ", empName='" + empName + '\'' +
+                ", salary=" + salary +
+                '}';
+    }
+
+    public String getEmpName() {
+        return empName;
+    }
+
+    public void setEmpName(String empName) {
+        this.empName = empName;
+    }
+
+    public float getSalary() {
+        return salary;
+    }
+
+    public void setSalary(float salary) {
+        this.salary = salary;
+    }
+}
