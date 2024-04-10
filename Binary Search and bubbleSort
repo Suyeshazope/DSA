@@ -1,0 +1,99 @@
+public class Main {
+    public static void main(String[] args) {
+//        Main ob = new Main();
+        int arr[] = { 9 , 3 , 90 , 101 , 101,4,4,2,0,0,12,43,101,101,439348};
+//        int x = 3;
+
+//        long start = System.nanoTime() ;
+//        int result = binarySearch(arr, x);
+//        System.out.println(result);
+
+//        int res[] = bubbleSort(arr);
+//        for(int i = 0 ; i < res.length ; i++){
+//            System.out.println(arr[i] + " ") ;
+//        }
+
+        System.out.println(binaryGap(5));
+
+//        long duration = (System.nanoTime()-start)/1000000 ;
+//        System.out.println(duration + "ms");
+    }
+
+    private static int binarySearch(int[] arr , int x){
+        int l = 0, r = arr.length - 1;
+        while (l <= r) {
+            int m = l + (r - l) / 2;
+
+            if (arr[m] == x)
+                return m;
+
+            if (arr[m] < x)
+                l = m + 1;
+
+            else
+                r = m - 1;
+        }
+
+        return -1;
+    }
+
+    private static int[] bubbleSort(int[] arr){
+        for(int i = 0 ; i < arr.length ; i++){
+           for(int j = i ; j < arr.length-1 ; j++){
+               if(arr[i] > arr[j]){
+                   int temp = arr[i] ;
+                   arr[i] = arr[j] ;
+                   arr[j] = temp ;
+               }
+           }
+        }
+
+        return arr ;
+    }
+
+    private static int binaryGap(int n){
+//        int i = 0 ;
+        String binary = "";
+        while(n > 0){
+            int rem = n % 2 ;
+            binary += String.valueOf(rem);
+            n = n / 2 ;
+        }
+
+//        int number =Integer.parseInt(binary);
+        String reverse = "" ;
+//
+
+        for (int i=0; i<binary.length(); i++)
+        {
+            char ch= binary.charAt(i); //extracts each character
+            reverse = ch+ reverse; //adds each character in front of the existing string
+        }
+
+        System.out.println(reverse);
+
+        int cnt = 0 ;
+        int max = 0 ;
+        boolean flag = false ;
+
+        for(int i = 0 ; i < reverse.length() ; i++){
+           if(flag){
+               if(reverse.charAt(i) == '0'){
+                   cnt++ ;
+               }
+               else{
+                   max = Math.max(max , cnt) ;
+                   cnt = 0 ;
+               }
+           }
+
+           if(reverse.charAt(i) == '1'){
+               flag = true ;
+           }
+        }
+
+        return max ;
+    }
+}
+
+
